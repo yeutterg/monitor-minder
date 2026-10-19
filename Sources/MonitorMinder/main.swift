@@ -31,7 +31,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             AppState.shared.model.start()
             // `--preview` shows the popover content in a normal window, for screenshots and development.
             if CommandLine.arguments.contains("--preview") { showPreview() }
+            // `--open-menu` opens the real menu bar window once launched, for README screenshots.
+            if CommandLine.arguments.contains("--open-menu") {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) { Self.statusButton()?.performClick(nil) }
+            }
         }
+    }
+
+    @MainActor private static func statusButton() -> NSStatusBarButton? {
+        func find(_ view: NSView?) -> NSStatusBarButton? {
+            guard let view else { return nil }
+            if let button = view as? NSStatusBarButton { return button }
+            return view.subviews.lazy.compactMap(find).first
+        }
+        return NSApp.windows.lazy.compactMap { find($0.contentView) }.first
     }
 
     @MainActor private func showPreview() {

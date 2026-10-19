@@ -2,6 +2,8 @@
 
 A small macOS menu bar app that remembers how your displays are arranged and snaps them back.
 
+<img src="docs/screenshot.png" width="700" alt="Monitor Minder open from the macOS menu bar: a diagram of four displays, saved layouts Desk and Presenting, Auto-restore, Settings and Quit">
+
 - **Named layouts for each set of displays.** Save the current arrangement as "Desk", "Presenting" and so on. Only layouts for the displays that are connected are shown.
 - **Arrangement, or arrangement + windows.** A layout records each display's position, resolution and refresh rate. It can optionally record where every window is, and move the windows back. Nothing is tiled.
 - **Drift check.** If a display moves a few points (the pointer stops crossing) or comes back at the wrong resolution, the menu says what changed and offers **Snap Back**.
