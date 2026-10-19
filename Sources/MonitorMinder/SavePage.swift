@@ -6,13 +6,13 @@ struct SavePage: View {
     let model: AppModel
     let done: () -> Void
     @State private var name = ""
-    @State private var includeWindows = true
+    @State private var includeWindows = false
     @State private var names: [String: String] = [:]
     @State private var windowCount: Int?
     @FocusState private var nameFocused: Bool
 
     private var needsAccess: Bool { includeWindows && !model.accessibilityTrusted }
-    private var canSave: Bool { !name.trimmingCharacters(in: .whitespaces).isEmpty && !needsAccess }
+    private var canSave: Bool { !name.trimmingCharacters(in: .whitespaces).isEmpty }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -24,7 +24,7 @@ struct SavePage: View {
                         .onSubmit { if canSave { commit() } }
                     Picker("Save", selection: $includeWindows) {
                         Text("Arrangement").tag(false)
-                        Text("Arrangement + Windows").tag(true)
+                        Text("With Windows").tag(true)
                     }
                     .pickerStyle(.segmented)
                     .labelsHidden()
@@ -40,6 +40,7 @@ struct SavePage: View {
                                     .multilineTextAlignment(.leading)
                                 Text(model.detailText(d)).font(.caption).foregroundStyle(.secondary)
                             }
+                            .fitsRow()
                         } icon: { Image(systemName: "display") }
                     }
                     if includeWindows {
@@ -47,7 +48,7 @@ struct SavePage: View {
                             Label {
                                 VStack(alignment: .leading, spacing: 6) {
                                     TwoLine(title: "Allow window access",
-                                            subtitle: "Turn on Monitor Minder in Privacy & Security › Accessibility")
+                                            subtitle: "Turn on Monitor Minder in Privacy & Security › Accessibility. Until then, Save keeps the arrangement only.")
                                     Button("Open Settings") { model.requestAccessibility() }
                                 }
                             } icon: { Image(systemName: "lock").foregroundStyle(.orange) }
@@ -84,6 +85,7 @@ struct SavePage: View {
         }
         .onAppear {
             names = model.config.displayNames
+            includeWindows = model.accessibilityTrusted
             name = model.layouts.isEmpty ? "Desk" : ""
             nameFocused = true
         }
@@ -102,7 +104,7 @@ struct SavePage: View {
     }
 
     private func commit() {
-        model.saveCurrent(name: name, includeWindows: includeWindows, displayNames: names)
+        model.saveCurrent(name: name, includeWindows: includeWindows && model.accessibilityTrusted, displayNames: names)
         done()
     }
 }

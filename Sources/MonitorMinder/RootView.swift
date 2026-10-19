@@ -101,5 +101,14 @@ struct TwoLine: View {
             Text(title)
             Text(subtitle).font(.caption).foregroundStyle(.secondary)
         }
+        .fitsRow()
+    }
+}
+
+extension View {
+    /// Lets long text wrap within the row instead of widening the whole form past the menu.
+    func fitsRow() -> some View {
+        fixedSize(horizontal: false, vertical: true)
+            .frame(minWidth: 0, idealWidth: 0, maxWidth: .infinity, alignment: .leading)
     }
 }
