@@ -1,0 +1,8 @@
+.build/
+build/
+.swiftpm/
+*.xcodeproj/
+xcuserdata/
+.DS_Store
+# Local layouts, if you point MONITOR_MINDER_CONFIG inside the repo while developing.
+config.json
