@@ -6,3 +6,7 @@ xcuserdata/
 .DS_Store
 # Local layouts, if you point MONITOR_MINDER_CONFIG inside the repo while developing.
 config.json
+
+# Personal Claude Code settings and hooks
+.claude/settings.local.json
+.claude/hooks/
